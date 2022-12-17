@@ -1,3 +1,19 @@
 # Hybrid_LST
 Hybrid_LST is a new initiative to visualize, manipulate, and hybridize satellite-based Land Surface Temperature Data. 
 Version 0.1 supports downloading Sentinel 3A L2 LST products and categorizes data with time and Orbit Direction (Descending, Ascending). Afterward, the code automatically extracts NetCDF files from the zip for parent (time) and child (Orbit Direction) folders.
+
+### **Getting Started**
+
+```
+us_name, pasword = "guest", "guest"  # authentication of sentinel open access hub.
+download_loc = "D:\\Sentinel_3A"  # full path of download location of the LST products.
+period = ("2022-12-02", "2022-12-03")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
+area = [26, 36, 28, 38]  # Rectangle of the study area (west,south,east,north)  
+
+# Spatial bounds also can be implemented using shapefile of study area (Later release!)
+# Create Class SentinelLST. It interacts with Copernicus Open Access Hub and creates, and sends queries.
+
+lst = SentinelLST(download_loc, us_name, pasword, period[0], period[1], area) # It interacts with Copernicus Open Access Hub
+lst.download_all()
+lst.extract_zip()  # Extracting data from the zip files.
+```
