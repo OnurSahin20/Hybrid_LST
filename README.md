@@ -11,7 +11,7 @@ period = ("2022-12-02", "2022-12-03")  # [begin_date,end_date) ex.("2022-12-02",
 area = [26, 36, 28, 38]  # Rectangle of the study area (west,south,east,north)  
 
 # Spatial bounds also can be implemented using shapefile of study area (Later release!)
-# Create Class SentinelLST. It interacts with Copernicus Open Access Hub and creates, and sends queries.
+# Create Class SentinelLST
 
 lst = SentinelLST(download_loc, us_name, pasword, period[0], period[1], area) # It interacts with Copernicus Open Access Hub
 lst.download_all()
