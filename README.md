@@ -5,6 +5,8 @@ Version 0.1 supports downloading Sentinel 3A L2 LST products and categorizes dat
 ### **Getting Started**
 
 ```
+from Download_SentinelL2_LST.py import SentinelLST
+
 us_name, pasword = "guest", "guest"  # authentication of sentinel open access hub.
 download_loc = "D:\\Sentinel_3A"  # full path of download location of the LST products.
 period = ("2022-12-02", "2022-12-03")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
