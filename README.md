@@ -5,7 +5,7 @@ First version of the program supports downloading Sentinel 3A L2 LST products an
 ### **Getting Started**
 
 ```
-from Download_SentinelL2_LST.py import SentinelLST
+from Sentinel3A_Download.py import SentinelLST
 
 us_name, pasword = "guest", "guest"  # authentication of sentinel open access hub.
 download_loc = "D:\\Sentinel_3A"  # full path of download location of the LST products.
