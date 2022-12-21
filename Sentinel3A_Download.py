@@ -48,7 +48,6 @@ class SentinelLST:
     def download_day(self, index) -> None:
         par_dir = self.down_path + "\\" + "Sentinel_LST_" + self.time_range[index]  # parent direc for request day
         os.makedirs(par_dir, exist_ok=True)  # it is creating parent directory for current day
-        # above comment is creates child directories for descending and ascending products.
         req = self.get_request(index)  # getting request for the day.
         if req.status_code != 200:
             raise ValueError("Request to open access hub can't created. Check your queries")
