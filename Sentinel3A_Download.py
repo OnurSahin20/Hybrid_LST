@@ -136,4 +136,4 @@ if __name__ == '__main__':
     # time line can be "Non Time Critical" or "Near Real Time"
     lst = SentinelLST(download_loc, us_name, pasword, period[0], period[1], area, timeline="Non Time Critical")
     lst.download_all()
-    # lst.extract_zip()
+    lst.extract_zip()
