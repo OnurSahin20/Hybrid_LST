@@ -26,7 +26,7 @@ lst.download_all()
 lst.extract_zip()
 ```
 #### Code Outputs
-![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/messages.PNG?raw=true)
+
 
 #### Folder Outputs
 ![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/loc.PNG?raw=true)
