@@ -6,6 +6,7 @@ First version of the program supports downloading Sentinel 3A L2 LST products an
 
 ```
 from Sentinel3A_Download.py import SentinelLST
+import geopandas 
 us_name, pasword = "username", "password"  # authentication of sentinel open access hub.
 download_loc = "location"  # full path of download location of the LST products.
 period = ("2022-01-01", "2022-02-01")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
