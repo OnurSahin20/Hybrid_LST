@@ -2,8 +2,6 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 import os
-import geopandas
-import webbrowser
 
 """ Script is created by Onur Gungor Sahin
 Institution : Izmir Institute of Technology
@@ -127,7 +125,7 @@ if __name__ == '__main__':
     period = ("2023-01-01", "2023-01-11")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
     # Rectangle of the study area (west,south,east,north)
     """  Shape file implementation  
-    shp_area = "C:\\Users\\Gungor\\PycharmProjects\\sentinel_api\\WAB\\WAB_area.shp"
+    shp_area = "shpfile_loc"
     gdf = geopandas.read_file(shp_area)
     w, s = gdf.bounds[["minx", "miny"]].min()
     e, n = gdf.bounds[["maxx", "maxy"]].max()
