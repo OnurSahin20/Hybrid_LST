@@ -51,7 +51,7 @@ class SentinelLST:
         # above comment is creates child directories for descending and ascending products.
         req = self.get_request(index)  # getting request for the day.
         if req.status_code != 200:
-            raise ValueError("Request to open access hub can't created. Check your queries")
+            raise ValueError("Request to open access hub can't created. Check your authentication")
         soup = BeautifulSoup(req.text, features="xml")
         direction = [str(tag).split(">")[1].split("<")[0] for tag in
                      soup.find_all("str", attrs={"name": "passdirection"})]  # ascending, descending directions.
@@ -121,8 +121,8 @@ class SentinelLST:
 
 if __name__ == '__main__':
     us_name, pasword = "username", "password"  # authentication of sentinel open access hub.
-    download_loc = "D:\\LST_Satellites\\Sentinel_3A"  # full path of download location of the LST products.
-    period = ("2023-01-01", "2023-01-11")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
+    download_loc = "download_loc"  # full path of download location of the LST products.
+    period = ("2022-06-01", "2022-06-06")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
     # Rectangle of the study area (west,south,east,north)
     """  Shape file implementation  
     shp_area = "shpfile_loc"
@@ -136,4 +136,4 @@ if __name__ == '__main__':
     # time line can be "Non Time Critical" or "Near Real Time"
     lst = SentinelLST(download_loc, us_name, pasword, period[0], period[1], area, timeline="Non Time Critical")
     lst.download_all()
-    lst.extract_zip()
+    # lst.extract_zip()
