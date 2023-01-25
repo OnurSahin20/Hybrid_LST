@@ -122,8 +122,8 @@ class SentinelLST:
 
 
 if __name__ == '__main__':
-    us_name, pasword = "onursahin", "4M8CVNGK"  # authentication of sentinel open access hub.
-    download_loc = "D:\\LST_Satellites\\Sentinel_3A"  # full path of download location of the LST products.
+    us_name, pasword = "username", "password"  # authentication of sentinel open access hub.
+    download_loc = "download_loc"  # full path of download location of the LST products.
     period = ("2022-01-01", "2022-02-01")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
 
     shp_area = "shapefile location"
