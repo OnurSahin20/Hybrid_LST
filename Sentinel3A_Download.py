@@ -126,11 +126,12 @@ if __name__ == '__main__':
     download_loc = "D:\\LST_Satellites\\Sentinel_3A"  # full path of download location of the LST products.
     period = ("2022-01-01", "2022-02-01")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
 
-    shp_area = "C:\\Users\\Gungor\\PycharmProjects\\sentinel_api\\WAB\\WAB_area.shp"
+    shp_area = "shapefile location"
     gdf = geopandas.read_file(shp_area)
     w, s = gdf.bounds[["minx", "miny"]].min()
     e, n = gdf.bounds[["maxx", "maxy"]].max()
     area = [w, s, e, n]  # Rectangle of the study area (west,south,east,north)
+    # It can be directly pass boundries of the study area without shapefile
     # Spatial bounds also can be implemented using shapefile of study area (Later release!)
     # time line can be "Non Time Critical" or "Near Real Time"
     lst = SentinelLST(download_loc, us_name, pasword, period[0], period[1], area, timeline="Non Time Critical")
