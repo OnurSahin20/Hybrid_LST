@@ -26,6 +26,7 @@ lst.download_all()
 lst.extract_zip()
 ```
 #### Code Outputs
+![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/xxxx.PNG?raw=true)
 
 
 #### Folder Outputs
