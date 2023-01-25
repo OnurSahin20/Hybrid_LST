@@ -8,19 +8,21 @@ First version of the program supports downloading Sentinel 3A L2 LST products an
 from Sentinel3A_Download.py import SentinelLST
 import geopandas 
 us_name, pasword = "username", "password"  # authentication of sentinel open access hub.
-download_loc = "location"  # full path of download location of the LST products.
-period = ("2022-01-01", "2022-02-01")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
-
-shp_area = "shapefile location"
+download_loc = "D:\\LST_Satellites\\Sentinel_3A"  # full path of download location of the LST products.
+period = ("2023-01-01", "2023-01-11")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
+# Rectangle of the study area (west,south,east,north)
+"""  Shape file implementation  
+shp_area = "C:\\Users\\Gungor\\PycharmProjects\\sentinel_api\\WAB\\WAB_area.shp"
 gdf = geopandas.read_file(shp_area)
 w, s = gdf.bounds[["minx", "miny"]].min()
 e, n = gdf.bounds[["maxx", "maxy"]].max()
-area = [w, s, e, n]  # Rectangle of the study area (west,south,east,north)
-# It can be directly pass boundries of the study area without shapefile
-# Spatial bounds also can be implemented using shapefile of study area (Later release!)
+"""
+
+# Change area list depends on your area of interest (w,s,e,n) if there is no shapefile.
+area = [26, 36, 30, 40]  # Rectangle of the study area (west,south,east,north)
 # time line can be "Non Time Critical" or "Near Real Time"
 lst = SentinelLST(download_loc, us_name, pasword, period[0], period[1], area, timeline="Non Time Critical")
-# lst.download_all()
+lst.download_all()
 lst.extract_zip()
 ```
 #### Code Outputs
