@@ -6,13 +6,13 @@ First version of the program supports downloading Sentinel 3A L2 LST products an
 
 ```
 from Sentinel3A_Download.py import SentinelLST
-import geopandas 
+
 us_name, pasword = "username", "password"  # authentication of sentinel open access hub.
 download_loc = "D:\\LST_Satellites\\Sentinel_3A"  # full path of download location of the LST products.
 period = ("2023-01-01", "2023-01-11")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
 # Rectangle of the study area (west,south,east,north)
 """  Shape file implementation  
-shp_area = "C:\\Users\\Gungor\\PycharmProjects\\sentinel_api\\WAB\\WAB_area.shp"
+shp_area = "shape_file_location"
 gdf = geopandas.read_file(shp_area)
 w, s = gdf.bounds[["minx", "miny"]].min()
 e, n = gdf.bounds[["maxx", "maxy"]].max()
