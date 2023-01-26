@@ -47,3 +47,11 @@ lst_df = sentinel_class.boundary_mask(lst_data) # basically clip lst_data with b
 sentinel_class.visualize_data_point(lst_df)
 ```
 ![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/visualize_plot.png?raw=true)
+
+Data points can be used to interpolate and re-grid data for NetCDF or raster format. Code uses scipy. interpolate NearestNDInterpolator when cloud contamination high direct usage of the interpolated map can be problematic; hence if there are points inside some raster, those values interpolated. Geographic coordinate system is WGS84 and resolution of the grid data is optinal.
+```
+lon, lat, lst_raster = sentinel_class.re_griding(lst_df, res=0.01)
+plt.pcolormesh(lon,lat,lst_raster)
+plt.show()
+```
+![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/regrid_data.png?raw=true)
