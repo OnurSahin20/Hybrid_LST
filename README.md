@@ -63,3 +63,4 @@ plt.pcolormesh(lon, lat, lst_raster)
 plt.show()
 ```
 ![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/mask_data.png?raw=true)
+The last step is re-grid data can be saved to .tif or .nc files. It is going to implement later soon.
