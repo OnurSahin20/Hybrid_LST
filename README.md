@@ -32,7 +32,7 @@ lst.extract_zip()
 #### Folder Outputs
 ![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/loc.PNG?raw=true)
 
-### ** Mask, regrid, spatial mask, and visualize, Sentinel LST Data**
+### Mask, regrid, spatial mask, and visualize, Sentinel LST Data
 L2 Sentinel SLSTR data is not conventional rasterized LST products and is not directly open using GIS programs. Sentinel_Data_Process.py can be utilized for masking, re-gridding, and visualization of Sentinel LST data. Inputs are the LST data folder location and shape file or rectangular coordinates of the study area. First you need to be create SentinelLst class. Quality definitions are given in "flags.nc" and "LST.nc" inside lst_path for Sentinel LST data.
 ```
 from Sentinel_Data_Process.py import SentinelLST
