@@ -62,4 +62,4 @@ lst_raster[mask == False] = np.nan
 plt.pcolormesh(lon, lat, lst_raster)
 plt.show()
 ```
-![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/mask_data.png?raw=true)
+![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/mask_data.png?width="100" height="100")
