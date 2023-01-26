@@ -55,3 +55,11 @@ plt.pcolormesh(lon,lat,lst_raster)
 plt.show()
 ```
 ![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/regrid_data.png?raw=true)
+Shapefile can be used to mask regrid data. "shp_file_masking" use matplotlib.path import Path for pixel masking. It returns 2d the boolean numpy array.
+```
+mask = sentinel_class.shp_file_masking(lat, lon)
+lst_raster[mask == False] = np.nan
+plt.pcolormesh(lon, lat, lst_raster)
+plt.show()
+```
+![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/mask_data.png?raw=true)
