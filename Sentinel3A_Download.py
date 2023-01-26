@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 import os
+import geopandas
 
 """ Script is created by Onur Gungor Sahin
 Institution : Izmir Institute of Technology
@@ -73,9 +74,14 @@ class SentinelLST:
                 if zip_file not in os.listdir(full_path):
                     with open(full_path + "\\" + zip_file, "wb") as file:
                         print(f"Download process of {name} begun. If it took to long check your internet speed")
-                        response = requests.get(link + "$value", auth=(self.user_name, self.password))
-                        file.write(response.content)
-                    print("Done!")
+                        final = link + "$value"
+                        response = requests.get(final, auth=(self.user_name, self.password))
+                        if response.status_code == 200:
+                            file.write(response.content)
+                            print("Done!")
+                        else:
+                            print("File is online but it can't be downloaded - HTTP ERROR 500!")
+                            self.offline_products.append([name, link, direction[i][0].upper()])
                 else:
                     print("File exist in the folder.")
             else:
@@ -83,14 +89,19 @@ class SentinelLST:
                 if int(d1) == 202:
                     print(name + " is offline and triggered")
                     self.offline_products.append([name, link, direction[i][0].upper()])
+                elif int(d1) == 403:
+                    print("The request is not accepted because the number of submitted "
+                          "requested exceeded the allowed user quota")
+                    self.offline_products.append([name, link, direction[i][0].upper()])
+
                 else:
+                    print("HTTP ERROR 500!")
                     self.offline_products.append([name, link, direction[i][0].upper()])
 
     def download_all(self):
         import csv
         for i in range(len(self.time_range) - 1):
             self.download_day(i)
-
         with open("Request_" + "OfflineFiles_" + self.time_range[0] + "-" + self.time_range[-2] + ".txt", "w",
                   newline="") as txt_file:
             writer = csv.writer(txt_file, delimiter=",")
