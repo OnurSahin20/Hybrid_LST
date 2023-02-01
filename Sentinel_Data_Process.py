@@ -89,9 +89,10 @@ class SentinelLST:
         geometry = [Point(xy) for xy in zip(df["lon"], df["lat"])]
         geo_df = geopandas.GeoDataFrame(df, geometry=geometry)
         if len(self.shpfile) > 0:
+            fig, ax = plt.subplots(1, 1, figsize=(10,6))
             gdf = geopandas.read_file(self.shpfile)
-            base = geo_df.plot(column="lst", legend=True)
-            gdf.plot(ax=base, color="white", edgecolor="black", alpha=0.3)
+            base = geo_df.plot(column="lst", legend=True, ax=ax)
+            gdf.plot(ax=ax, color="white", edgecolor="black", alpha=0.1)
         else:
             base = geo_df.plot(column="lst", legend=True)
         plt.ylabel("Latitude"), plt.xlabel("Longitude")
