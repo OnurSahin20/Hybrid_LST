@@ -63,6 +63,7 @@ plt.pcolormesh(lon, lat, lst_raster)
 plt.show()
 ```
 ![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/mask_data.png?raw=true)
+
 Re-grid data can be saved to .tif file.
 ```
 sentinel_class.save_to_tiff(lon,lat,lst_raster,save_loc = "loc", product = "day") 
