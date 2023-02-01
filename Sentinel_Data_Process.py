@@ -149,11 +149,38 @@ class SentinelLST:
         dists, indexes = tree.query(xi)
         interp = NearestNDInterpolator(list(zip(data_points[:, 0], data_points[:, 1])), mask_df["lst"].values)
         model = interp(*grid)
-        dists[dists > (2 * res ** 2) ** 0.5] = 0
+        dists[dists > np.sqrt(2) * res] = 0
         dists[dists != 0] = 1
         model[dists.astype(int) == 0] = np.nan
         return x, y, model
+    
+    def save_to_tiff(self, x, y, grid_data, save_loc, product="Day"):
+        import rasterio
+        from rasterio.transform import Affine
+        xres, yres = x[1] - x[0], y[0] - y[1]
+        crs = "epsg:4326"
+        """save_loc is location where tiff file will save. Products is day (Day) or night (night)"""
+        fname = save_loc + "\\" +  "SLSTR_LST_" + self.folder_loc.split("____")[-1].split("T")[0] \
+                + "_" + product + ".tif"
+        transform = Affine.translation(x[0] - xres / 2, y[-1] - yres / 2) * Affine.scale(xres, yres)
+        try:
+            with rasterio.open(
+                    fname,
+                    mode="w",
+                    driver="GTiff",
+                    height=grid_data.shape[0],
+                    width=grid_data.shape[1],
+                    count=1,
+                    dtype=grid_data.dtype,
+                    crs=crs,
+                    transform=transform,
+                    nodata = -9999
+            ) as new_dataset:
+                new_dataset.write(grid_data[::-1], 1)
+            return "LST data saved to tif file successfully"
 
+        except:
+            return "tiff file can't save !!!"
 
 if __name__ == '__main__':
     lst_path = "LST path"
@@ -167,3 +194,4 @@ if __name__ == '__main__':
     lst_raster[mask == False] = np.nan
     plt.pcolormesh(lon, lat, lst_raster)
     plt.show()
+    sentinel_class.save_to_tiff(lon,lat,lst_raster,"loc","day")
