@@ -46,7 +46,7 @@ lst_df = sentinel_class.boundary_mask(lst_data) # basically clip lst_data with b
 # Study are and LST data can be easliy visualize 
 sentinel_class.visualize_data_point(lst_df)
 ```
-![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/data_frame.png?raw=true)
+![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/visualize_point.png?raw=true)
 
 Data points can be used to interpolate and re-grid data for NetCDF or raster format. Code uses scipy. interpolate NearestNDInterpolator when cloud contamination high direct usage of the interpolated map can be problematic; hence if there are points inside some raster, those values interpolated. Geographic coordinate system is WGS84 and resolution of the grid data is optinal.
 ```
@@ -54,7 +54,7 @@ lon, lat, lst_raster = sentinel_class.re_griding(lst_df, res=0.01)
 plt.pcolormesh(lon,lat,lst_raster)
 plt.show()
 ```
-![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/regrid1.png?raw=true)
+![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/regrid2.png?raw=true)
 Shapefile can be used to mask regrid data. "shp_file_masking" use matplotlib.path import Path for pixel masking. It returns 2d the boolean numpy array.
 ```
 mask = sentinel_class.shp_file_masking(lat, lon)
@@ -62,7 +62,7 @@ lst_raster[mask == False] = np.nan
 plt.pcolormesh(lon, lat, lst_raster)
 plt.show()
 ```
-![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/spatial_mask.png?raw=true)
+![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/mask.png?raw=true)
 
 Re-grid data can be saved to .tif file.
 ```
