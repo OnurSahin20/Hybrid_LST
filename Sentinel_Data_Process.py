@@ -122,8 +122,6 @@ class SentinelLST:
                 raise ValueError("input tuple has to be (west,south,east,north)")
             w, s, e, n = self.rec
         lat, lon = self.extract_wgs_coord()
-        # y, x = self.extract_cartesian_coord() # later!!
-        # Actual equivalent of lat,lon can be found using cartesian coordinates x,y (Later implementation)
         r, c = lat.shape
         df = pd.DataFrame({"lon": lon.reshape((r * c)), "lat": lat.reshape((r * c)),
                            "lst": data.reshape((r * c))}).dropna()
