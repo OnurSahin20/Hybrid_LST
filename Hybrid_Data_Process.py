@@ -4,6 +4,7 @@ from pandas import date_range
 import os
 from Terra_Data_Process import TerraLST
 from Sentinel_Data_Process import SentinelLST
+import matplotlib.pyplot as plt
 
 
 class HybridLst:
@@ -39,15 +40,13 @@ class HybridLst:
         if len(product_filter) == 0:
             return empty_data
         lst_data = np.zeros((len(product_filter), len(self.terra_lat), len(self.terra_lon))) * np.nan
-        # scan_time = "No Data"
         for f in range(len(product_filter)):
-            # scan_time = product_filter[f].split("_")[7].split("T")[-1]
             sen_cla = SentinelLST(full_path + "\\" + product_filter[f], self.shp_file)
             lst_df = sen_cla.boundary_mask(sen_cla.sentinel_lst_data())
             if len(lst_df) == 0:
                 lst_data[f, :, :] = empty_data
             else:
-                x, y, model = sen_cla.re_griding(self.terra_lon, self.terra_lat)
+                x, y, model = sen_cla.re_griding(self.terra_lat, self.terra_lon,lst_df)
                 lst_data[f, :, :] = model
         if len(product_filter) > 1:
             if np.all(np.isnan(lst_data[1, :, :])):
@@ -104,4 +103,27 @@ class HybridLst:
         ds.close()
         return "day and night LSTs save to .nc4 file successfully."
 
-
+    def plot_lst_instants(self, cur_date, date="day"):
+        dic = {"day": "D", "night": "A"}
+        d1 = self.get_sentinel_instant_lst(cur_date, date=dic[date])
+        d2 = self.get_terra_instant_lst(cur_date, date=date)
+        vmin, vmax = min(np.nanmin(d1), np.nanmin(d2)), max(np.nanmax(d1), np.nanmax(d2))
+        fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+        fig1 = axs[0][0].pcolormesh(self.terra_lon, self.terra_lat, d1, vmin=vmin, vmax=vmax)
+        axs[0][0].set_title(f"Sentinel LST for day {cur_date}"), fig.colorbar(fig1, ax=axs[0][0], label="LST (C)")
+        fig2 = axs[0][1].pcolormesh(self.terra_lon, self.terra_lat, d2, vmin=vmin, vmax=vmax)
+        axs[0][1].set_title(f"MODIS Terra LST for day {cur_date}"),fig.colorbar(fig2, ax=axs[0][1], label="LST (C)")
+        fig3 = axs[1][0].pcolormesh(self.terra_lon, self.terra_lat, (d1 - d2))
+        axs[1][0].set_title(f"Difference")
+        fig.colorbar(fig3, ax=axs[1][0], label="LST Difference (C)")
+        d2[np.isnan(d1)] = np.nan
+        d11, d22 = d1.flatten(), d2.flatten()
+        rmsd = np.nanmean((d11 - d22) ** 2) ** 0.5
+        axs[1][1].scatter(d11, d22, s=0.5)
+        axs[1][1].set_ylim([vmin, vmax])
+        axs[1][1].set_xlim([vmin, vmax])
+        axs[1][1].set_xlabel("Sentinel LST")
+        axs[1][1].set_ylabel("Terra LST")
+        axs[1][1].set_title(f"RMSD = {rmsd:.2f}")
+        axs[1][1].set_aspect('equal', adjustable='box')
+        plt.show()
