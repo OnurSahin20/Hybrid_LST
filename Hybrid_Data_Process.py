@@ -76,9 +76,9 @@ class HybridLst:
     def build_time_series(self, product, date):
         lst_data = np.zeros((len(self.time_period), len(self.terra_lat), len(self.terra_lon))) * np.nan
         for t in range(len(self.time_period)):
-            if product == "terra":
+            if product.lower() == "terra":
                 lst_data[t, :, :] = self.get_terra_instant_lst(self.time_period[t], date)
-            elif product == "slstr":
+            elif product.lower() == "slstr" or product.lower() == "sentinel":
                 lst_data[t, :, :] = self.get_sentinel_instant_lst(self.time_period[t], date)
         return lst_data
 
