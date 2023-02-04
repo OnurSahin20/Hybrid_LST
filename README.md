@@ -39,18 +39,17 @@ from Sentinel_Data_Process.py import SentinelLST
 lst_path = "lst_folder_loc"
 shape_path = "shafile_loc"
 sentinel_class = SentinelLST(lst_path,shpfile=shape_path)
-# It creates one day and one ascending or descending order LST class.
+# It creates one day and one ascending or descending order LST class.  flags_in clean cloud contaminated data. Uncertainty masks control data quality using the threshold value "uncertainty."
 lst_data = sentinel_class.sentinel_lst_data(flags_in=True, uncertainty_mask=True, exception_mask=True,uncertainty=2)
-#  flags_in clean cloud contaminated data. Uncertainty masks control data quality using the threshold value "uncertainty."
 lst_df = sentinel_class.boundary_mask(lst_data) # basically clip lst_data with boundaries of the study are output is pandas dataframe.
-# Study are and LST data can be easliy visualize 
 sentinel_class.visualize_data_point(lst_df)
 ```
 <!-- ![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/visualize_point.png?raw=true) -->
 
 Data points can be used to interpolate and re-grid data for NetCDF or raster format. Code uses scipy. interpolate NearestNDInterpolator when cloud contamination high direct usage of the interpolated map can be problematic; hence if there are points inside some raster, those values interpolated. Geographic coordinate system is WGS84 and resolution of the grid data is optinal.
 ```
-lon, lat, lst_raster = sentinel_class.re_griding(lst_df, res=0.01)
+y,x = sentinel_class.extract_wgs_coord
+lon, lat, lst_raster = sentinel_class.re_griding(y,x_df, res=0.01)
 plt.pcolormesh(lon,lat,lst_raster)
 plt.show()
 ```
