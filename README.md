@@ -93,3 +93,10 @@ It is possible to get Terra and Sentinel LST day or night product for specific d
 sentinel_lst = hybrid.get_sentinel_instant_lst(cur_date="2022-08-04",date="day")
 terra_lst = hybrid.get_terra_instant_lst(cur_date="2022-08-04",date="day")
 ```
+Visualize instances, LST differences and scatter plot using hybrid.plot_lst_instant
+
+```
+sentinel_lst = hybrid.get_sentinel_instant_lst(cur_date="2022-08-04",date="day")
+terra_lst = hybrid.get_terra_instant_lst(cur_date="2022-08-04",date="day")
+```
+
