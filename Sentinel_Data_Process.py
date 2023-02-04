@@ -196,8 +196,4 @@ if __name__ == '__main__':
     maskk = sentinel_class.shp_file_masking(shape_path, lat, lon)
     lst_raster[maskk == False] = np.nan
     # # # sentinel_class.save_to_tiff(lon,lat,lst_raster,os.getcwd())
-    plt.figure(figsize=(10, 6))
-    plt.pcolormesh(lon, lat, lst_raster)
-    plt.colorbar(label="LST (C)")
-    plt.show()
-    print(sentinel_class.save_to_tiff(0.01, os.getcwd()))
+
