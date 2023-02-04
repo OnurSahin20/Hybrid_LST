@@ -2,7 +2,7 @@
 Hybrid_LST is a generic program to visualize, manipulate, and hybridize satellite-based Land Surface Temperature Data High (1 km) Resolution MODIS (Aqua - Terra),  VIIIRS, Sentinel3A- SLSTR and hyper (<100m) LANDSAT, ECOSTRESS. As a result, spatially and temporally continuous LST maps can be automatically obtained for basin or regional scale studies using this generic program.  
 The program supports downloading Sentinel 3A L2 LST products and categorizes data with time and Orbit Direction (Descending, Ascending). Code can handle offline files. Code generates a txt file and saves offline files to it. Rerun your code a couple of times (1-2 hours later!) until the txt file is empty. 
 
-### **Getting Started**
+### **Download Sentinel SLSTR LST Data**
 
 ```
 from Sentinel3A_Download.py import SentinelLST
