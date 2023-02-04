@@ -104,8 +104,4 @@ class HybridLst:
         ds.close()
         return "day and night LSTs save to .nc4 file successfully."
 
-if __name__ == '__main__':
-    sentinel_path = "D:\\LST_Satellites\\Sentinel_3A\\KMB\\August_2021"
-    shpp_file = "C:\\Users\\Gungor\\PycharmProjects\\sentinel_api\\KMB\\KMB.shp"
-    terra_path = "KMB_LST_Values_August.nc"
-    hybrid = HybridLst(terra_path, sentinel_path, ("2022-08-01", "2022-09-01"), shpp_file)
+
