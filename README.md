@@ -113,7 +113,7 @@ Products ["terra_day, terra_night, sentinel_day, sentinel_night"] can be saved t
 
 ```
 direc = "location"
-nc_name = "August_LSTs without .nc"
+nc_name = "netcdf file name  without extension (.nc)"
 hybrid.save_lsts_netcdf(direc, nc_name)
 ```
 
