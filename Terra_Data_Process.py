@@ -34,7 +34,7 @@ class TerraLST:
 
 
 if __name__ == '__main__':
-    terra_path = "KMB_LST_Values_August.nc"
+    terra_path = "Terra LST full path"
     terra = TerraLST(terra_path)
     lat, lon = terra.get_wgs_coord()
     terra_lst = terra.get_lst()
