@@ -125,21 +125,12 @@ class SentinelLST:
         df_mask = df.loc[(df.lat >= s) & (df.lat <= n) & (df.lon >= w) & (df.lon <= e)]
         return df_mask
 
-    def re_griding(self, mask_df, res=0.01):
+    def re_griding(self, y,x, mask_df, res=0.01):
         from scipy.interpolate.interpnd import _ndim_coords_from_arrays
         from scipy.spatial import KDTree
         from scipy.interpolate import NearestNDInterpolator
-        """ Only have one interpolation option (nearest) and it can be improved (RBF implementation)"""
-        if len(self.rec) == 0:
-            gdf = geopandas.read_file(self.shpfile)
-            w, s = gdf.bounds[["minx", "miny"]].min()
-            e, n = gdf.bounds[["maxx", "maxy"]].max()
-        else:
-            if len(self.rec) < 4:
-                raise ValueError("input tuple has to be (west,south,east,north)")
-            w, s, e, n = self.rec
 
-        x, y = np.arange(w, e + res, res), np.arange(n, s - res, -res)
+
         grid, data_points = np.meshgrid(x, y), mask_df.loc[:, ["lon", "lat"]].values
         tree, xi = KDTree(data_points), _ndim_coords_from_arrays(tuple(grid), ndim=data_points.shape[1])
         dists, indexes = tree.query(xi)
@@ -183,17 +174,4 @@ class SentinelLST:
             return "tiff file can't save !!!"
 
 
-if __name__ == '__main__':
-    lst_path = "D:\\LST_Satellites\Sentinel_3A\\KMB\\August_2021\\Sentinel_LST_2022-08-04\\S3A_SL_2_LST____" \
-               "20220804T080516_20220804T080816_20220805T171836_0180_088_192_2340_PS1_O_NT_004.SEN3_D"
-    shape_path = "C:\\Users\\Gungor\\PycharmProjects\\sentinel_api\\KMB\\KMB.shp"
-    sentinel_class = SentinelLST(lst_path, shpfile=shape_path)
-    lst_data = sentinel_class.sentinel_lst_data(flags_in=True, uncertainty_mask=True, exception_mask=True,
-                                                uncertainty=2)
-    lst_df = sentinel_class.boundary_mask(lst_data)
-    # print(sentinel_class.visualize_data_point(lst_df))
-    lat, lon, lst_raster = sentinel_class.re_griding(lst_df, res=0.01)
-    maskk = sentinel_class.shp_file_masking(shape_path, lat, lon)
-    lst_raster[maskk == False] = np.nan
-    # # # sentinel_class.save_to_tiff(lon,lat,lst_raster,os.getcwd())
 
