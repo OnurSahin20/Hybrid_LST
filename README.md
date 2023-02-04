@@ -99,3 +99,13 @@ Visualize instances, LST differences and scatter plot using hybrid.plot_lst_inst
 hybrid.plot_lst_instants(cur_date= "2022-08-04",date="night")
 ```
 ![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/visualize_lsts.png?raw=true)
+
+Build time series for Sentinel and Terra LST 3d numpy array (time,lat,lon)
+
+```
+HybridLST initialized with begin and end times - ("2022-08-01", "2022-09-01"). 3d LST arrays np.shape -> (31,len(lat),len(lon))
+terra_day = hybrid.build_time_series(product="terra", date="day")
+terra_night = hybrid.build_time_series(product="terra", date="night")
+sentinel_day = hybrid.build_time_series(product="sentinel",date="day")
+sentinel_night = hybrid.build_time_series(product="sentinel",date="night")
+```
