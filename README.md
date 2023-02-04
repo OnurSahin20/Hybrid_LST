@@ -74,10 +74,10 @@ sentinel_class.save_to_tiff(lon,lat,lst_raster,save_loc = "loc", product = "day"
 It is easy to get MODIS LST products using AρρEEARS - NASA tool. TerraLST class access lat, lon coordinates and LST data. Variables [""LST_Day_1km",""LST_Night_1km","QC_Day","QC_Night"] have to be inside Terra nc file.(It supoorts only netcdf file!). Quality variables of both day, night products provide LST errors which are [0 - Average LST error <= 1K, (65,73,81) - Average LST error <= 2K and (129,145) - Average LST error <= 3K). Use uncertainty input params to choose your quality flag. Other values will be masked. Straigthfoward usage of TerraClass 
 ```
 from Terra_Data_Process.py import TerraLST
-    terra_path = "Full path of Terra L3 product is taken from AρρEEARS"
-    terra = TerraLST(terra_path)
-    lat, lon = terra.get_wgs_coord() # arrays of latitudes and longitudes.
-    terra_lst = terra.get_lst()     # 3d numpy array (time, lat, lon)
+terra_path = "Full path of Terra L3 product is taken from AρρEEARS"
+terra = TerraLST(terra_path)
+lat, lon = terra.get_wgs_coord() # arrays of latitudes and longitudes.
+terra_lst = terra.get_lst()     # 3d numpy array (time, lat, lon)
 ```
 
 
