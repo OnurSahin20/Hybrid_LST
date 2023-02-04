@@ -87,5 +87,9 @@ shape_file = "C:\\Users\\shape.shp"
 terra_path = "Terra.nc"
 hybrid = HybridLst(terra_path, sentinel_path, ("2022-08-01", "2022-09-01"), shape_file)
 ```
+It is possible to get Terra and Sentinel LST day or night product for specific day 
 
-
+```
+sentinel_lst = hybrid.get_sentinel_instant_lst(cur_date="2022-08-04",date="day")
+terra_lst = hybrid.get_terra_instant_lst(cur_date="2022-08-04",date="day")
+```
