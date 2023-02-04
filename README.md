@@ -109,3 +109,11 @@ terra_night = hybrid.build_time_series(product="terra", date="night")
 sentinel_day = hybrid.build_time_series(product="sentinel",date="day")
 sentinel_night = hybrid.build_time_series(product="sentinel",date="night")
 ```
+Products ["terra_day, terra_night, sentinel_day, sentinel_night"] can be saved to netcdf file using method hybrid.save_lsts_netcdf
+
+```
+direc = "location"
+nc_name = "August_LSTs without .nc"
+hybrid.save_lsts_netcdf(direc, nc_name)
+```
+
