@@ -107,7 +107,10 @@ class HybridLst:
         dic = {"day": "D", "night": "A"}
         d1 = self.get_sentinel_instant_lst(cur_date, date=dic[date])
         d2 = self.get_terra_instant_lst(cur_date, date=date)
-        vmin, vmax = min(np.nanmin(d1), np.nanmin(d2)), max(np.nanmax(d1), np.nanmax(d2))
+        if np.all(np.isnan(d1)):
+            vmin, vmax = np.nanmin(d2),np.nanmax(d2)
+        else:
+            vmin, vmax = min(np.nanmin(d1), np.nanmin(d2)), max(np.nanmax(d1), np.nanmax(d2))
         fig, axs = plt.subplots(2, 2, figsize=(12, 8))
         fig1 = axs[0][0].pcolormesh(self.terra_lon, self.terra_lat, d1, vmin=vmin, vmax=vmax)
         axs[0][0].set_title(f"Sentinel LST for day {cur_date}"), fig.colorbar(fig1, ax=axs[0][0], label="LST (C)")
