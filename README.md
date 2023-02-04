@@ -80,7 +80,7 @@ terra_lst = terra.get_lst()     # 3d numpy array (time, lat, lon)
 ```
 ### Hybridized Terra and SLSTR
 Terra and SLSTR cross the equator from north to south, descending (10:30 and 10.00) and south to north, ascending (22:30,22.00). MODIS Terra and Sentinel SLSTR LSTs can be used for data fusion purposes. Hybrid_Data_Process.py parent class, which provides working with terra and sentinel classes.
-First create HybridLST instance. 4 inputs are required. full path to Sentinel folder's location, Terra netcf location and path to shapefile (.shp file). Tuple of start and end date of time interval.
+First create HybridLST instance. 4 inputs are required. full path to Sentinel folder's location, Terra netcf location and path to shapefile (.shp file). Tuple of start and end date of time interval. Matplotlib.path based mask is effective but it has computational burden thats why code creates mask using shapefile one time and save mask to txt file.
 ```
 sentinel_path = "D:\\Path to Sentinel_Files"
 shape_file = "C:\\Users\\shape.shp"
@@ -96,7 +96,6 @@ terra_lst = hybrid.get_terra_instant_lst(cur_date="2022-08-04",date="day")
 Visualize instances, LST differences and scatter plot using hybrid.plot_lst_instant
 
 ```
-sentinel_lst = hybrid.get_sentinel_instant_lst(cur_date="2022-08-04",date="day")
-terra_lst = hybrid.get_terra_instant_lst(cur_date="2022-08-04",date="day")
+hybrid.plot_lst_instants(cur_date= "2022-08-04",date="night")
 ```
-
+![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/visualize_lsts.png?raw=true)
