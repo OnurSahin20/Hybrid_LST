@@ -80,7 +80,7 @@ terra_lst = terra.get_lst()     # 3d numpy array (time, lat, lon)
 ```
 ### Hybridized Terra and SLSTR
 Terra and SLSTR cross the equator from north to south, descending (10:30 and 10.00) and south to north, ascending (22:30,22.00). MODIS Terra and Sentinel SLSTR LSTs can be used for data fusion purposes. Hybrid_Data_Process.py parent class, which provides working with terra and sentinel classes.
-First create HybridLST instance. 3 inputs are required. full path to Sentinel folder's location, Terra netcf location and path to shapefile (.shp file)
+First create HybridLST instance. 4 inputs are required. full path to Sentinel folder's location, Terra netcf location and path to shapefile (.shp file). Tuple of start and end date of time interval.
 ```
 sentinel_path = "D:\\Path to Sentinel_Files"
 shape_file = "C:\\Users\\shape.shp"
