@@ -18,7 +18,7 @@ class HybridLst:
         self.all_terra_lst_day = self.terra_class.get_lst(product="day")
         self.all_terra_lst_night = self.terra_class.get_lst(product="night")
         self.mask_file = "spatial_mask_array.txt"
-
+        self.dic = dic = {"day": "D", "night": "A"}
         if self.mask_file not in os.listdir(os.getcwd()):
             self.masking_array = SentinelLST.shp_file_masking(self.shp_file, self.terra_lat, self.terra_lon)
             # how many empty cell due to spatial masking.
@@ -28,7 +28,7 @@ class HybridLst:
 
         self.count_empty = np.sum(self.masking_array == False)
 
-    def get_sentinel_instant_lst(self, cur_date, date="D"):
+    def get_sentinel_instant_lst(self, cur_date, date="day"):
         full_path = self.sentinel_direc + "\\Sentinel_LST_" + cur_date
         empty_data = np.zeros((len(self.terra_lat), len(self.terra_lon))) * np.nan
         if "Sentinel_LST_" + cur_date not in os.listdir(self.sentinel_direc):
@@ -36,7 +36,7 @@ class HybridLst:
 
         all_files = os.listdir(full_path)
         zip_filter = [file for file in all_files if ".zip" not in file]  # it filter .zip files and correct products.
-        product_filter = [file for file in zip_filter if file.split("_")[-1] == date]
+        product_filter = [file for file in zip_filter if file.split("_")[-1] == self.dic[date]]
         if len(product_filter) == 0:
             return empty_data
         lst_data = np.zeros((len(product_filter), len(self.terra_lat), len(self.terra_lon))) * np.nan
@@ -104,8 +104,7 @@ class HybridLst:
         return "day and night LSTs save to .nc4 file successfully."
 
     def plot_lst_instants(self, cur_date, date="day"):
-        dic = {"day": "D", "night": "A"}
-        d1 = self.get_sentinel_instant_lst(cur_date, date=dic[date])
+        d1 = self.get_sentinel_instant_lst(cur_date, date=date)
         d2 = self.get_terra_instant_lst(cur_date, date=date)
         if np.all(np.isnan(d1)):
             vmin, vmax = np.nanmin(d2),np.nanmax(d2)
