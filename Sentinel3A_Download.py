@@ -72,18 +72,26 @@ class SentinelLST:
 
                 zip_file = name + "_" + direction[i][0].upper() + ".zip"
                 if zip_file not in os.listdir(full_path):
+                    print(f"Download process of {name} begun. If it took to long check your internet speed")
                     with open(full_path + "\\" + zip_file, "wb") as file:
-                        print(f"Download process of {name} begun. If it took to long check your internet speed")
                         final = link + "$value"
                         response = requests.get(final, auth=(self.user_name, self.password))
                         if response.status_code == 200:
+                            success = True
                             file.write(response.content)
                             print("Done!")
                         else:
+                            success = False
                             print("File is online but it can't be downloaded - HTTP ERROR 500!")
                             self.offline_products.append([name, link, direction[i][0].upper()])
+                    if not success:
+                        os.remove(full_path + "\\" + zip_file)
                 else:
-                    print("File exist in the folder.")
+                    if os.path.getsize(full_path + "\\" + zip_file) == 0:
+                        os.remove(full_path + "\\" + zip_file)
+                        print("Empty zip file is written in the folder and it is removed !.")
+                    else:
+                        print("File exist in the folder!")
             else:
                 d1 = requests.get(link + "$value", auth=(self.user_name, self.password)).status_code
                 if int(d1) == 202:
@@ -129,21 +137,3 @@ class SentinelLST:
                     fname = z.split(".")[0][0:-2] + ".SEN3"
                     os.rename(par + "\\" + fname, par + "\\" + fname + "_" + pdirec)
         print("Files are extracted successfully !")
-
-
-if __name__ == '__main__':
-    us_name, pasword = "username", "passwarod"  # authentication of sentinel open access hub.
-    download_loc = "downlaod_loc" # full path of download location of the LST products.
-    period = ("2022-08-01", "2022-09-01")  # [begin_date,end_date) ex.("2022-12-02", "2022-12-03") listed 1 day
-    # Rectangle of the study area (west,south,east,north)
-    # Shape file implementation
-    shp_area = "full path of shapefile"
-    gdf = geopandas.read_file(shp_area)
-    west, south = gdf.bounds[["minx", "miny"]].min()
-    east, north = gdf.bounds[["maxx", "maxy"]].max()
-    # Change area list depends on your area of interest (w,s,e,n) if there is no shapefile.
-    area = [west, south, east, north]  # Rectangle of the study area (west,south,east,north)
-    # # time line can be "Non Time Critical" or "Near Real Time"
-    lst = SentinelLST(download_loc, us_name, pasword, period[0], period[1], area, timeline="Non Time Critical")
-    lst.download_all()
-    # lst.extract_zip()
