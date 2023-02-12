@@ -4,16 +4,6 @@ from bs4 import BeautifulSoup
 import os
 import geopandas
 
-""" Script is created by Onur Gungor Sahin
-Institution : Izmir Institute of Technology
-Department : International Water Resources
-emails : onursahin@iyte.edu.tr, ogungorsahin@gmail.com
-Script is first release version 0.1 for downloading Sentinel 3A Land Surface Temperature (LST) data.
-This project extraction of LST for specific study area and post processing of it.
-1) It creates parent folders (dates) for Sentinel 3A 
-   and downloads each days LST to the right folders and labels them with pass direction (Ascending,Descending).
-"""
-
 
 class SentinelLST:
 
@@ -137,9 +127,6 @@ class SentinelLST:
                         with zipfile.ZipFile(par + "\\" + z, "r") as zip_obj:
                             print(f"Zip files in {par} are extracting right now!")
                             zip_obj.extractall(path=par)
-                            os.rename(par + "\\" + fname,par + "\\" + fold_name)
+                            os.rename(par + "\\" + fname, par + "\\" + fold_name)
                     else:
                         print("Zip file is extracted before !")
-
-
-
