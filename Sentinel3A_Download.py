@@ -117,23 +117,29 @@ class SentinelLST:
                 writer.writerow(off)
         print("All online files are downloaded and offline files are saved to txt")
 
-    def extract_zip(self):
+    @staticmethod
+    def extract_zip(path):
         import zipfile
-        days = os.listdir(self.down_path)
-        par_direcs = [self.down_path + "\\" + day for day in days]  # folders to extract
+        days = os.listdir(path)
+        par_direcs = [path + "\\" + day for day in days]  # folders to extract
         print("unzipping is started !")
         if len(par_direcs) == 0:
             print("There is no zip file to extract.")
             return -1
         for par in par_direcs:
-            print(f"Zip files in {par} are extracting right now!")
             files = os.listdir(par)
             for z in files:
                 if ".zip" in z:
-                    with zipfile.ZipFile(par + "\\" + z, "r") as zip_obj:
-                        zip_obj.extractall(path=par)
-
                     pdirec = z.split(".")[0][-1]
                     fname = z.split(".")[0][0:-2] + ".SEN3"
-                    os.rename(par + "\\" + fname, par + "\\" + fname + "_" + pdirec)
-        print("Files are extracted successfully !")
+                    fold_name = fname + "_" + pdirec
+                    if fold_name not in files:
+                        with zipfile.ZipFile(par + "\\" + z, "r") as zip_obj:
+                            print(f"Zip files in {par} are extracting right now!")
+                            zip_obj.extractall(path=par)
+                            os.rename(par + "\\" + fname,par + "\\" + fold_name)
+                    else:
+                        print("Zip file is extracted before !")
+
+
+
