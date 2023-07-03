@@ -72,7 +72,6 @@ sentinel_class.save_to_tiff(lon,lat,lst_raster,save_loc = "loc", product = "day"
 Daily descending and ascending LST products can be saved easily to netcdf file. We created Sentinel_Extract_Daily.py 
 which is parent class of SentinelLST. SentinelDaily.py class from Sentinel_Extract_Daily is the implementation for the purpose.
 
-```
 ### Extract_Daily LST from Sentinel
 ```
 from Sentinel_Extract_Daily.py import SentinelDaily
