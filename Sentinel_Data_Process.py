@@ -22,21 +22,6 @@ class SentinelLST:
         self.flag_file = self.folder_loc + "\\" + self.flag
         self.met_file = self.folder_loc + "\\" + self.met
 
-    @staticmethod
-    def shp_file_masking(shpfile_loc, lat, lon):
-
-        if len(shpfile_loc) == 0:
-            raise ValueError('"shapefile" must be declared')
-        else:
-            gridx, gridy = np.meshgrid(lon, lat)
-            gdf = geopandas.read_file(shpfile_loc)
-            r, c = gridx.shape
-            poly = list(gdf.unary_union.exterior.coords)
-            poly_path = Path(poly)
-            coors = np.hstack((gridx.reshape((r * c, 1)), gridy.reshape((r * c, 1))))
-            mask = poly_path.contains_points(coors).reshape((r, c))
-        return mask.astype(int)
-
     def sentinel_lst_data(self, flags_in=True, uncertainty_mask=True,
                           exception_mask=True, uncertainty=2):
         """ Method extracts LST from Sentinel 3A data from the folder location.Two type flag method is available.
@@ -86,11 +71,14 @@ class SentinelLST:
         if len(self.shpfile) > 0:
             fig, ax = plt.subplots(1, 1, figsize=(10, 6))
             gdf = geopandas.read_file(self.shpfile)
+
+            gdf.plot(ax=ax, color="white", edgecolor="black", alpha=1)
             base = geo_df.plot(column="lst", legend=True, ax=ax)
-            gdf.plot(ax=ax, color="white", edgecolor="black", alpha=0.1)
         else:
             base = geo_df.plot(column="lst", legend=True)
         plt.ylabel("Latitude"), plt.xlabel("Longitude")
+        day = self.folder_loc.split("\\")[5]
+        plt.title(f"{day}")
         plt.show()
 
     def uncertainty_mask(self, uncertainty):
@@ -124,30 +112,31 @@ class SentinelLST:
                            "lst": data.reshape((r * c))}).dropna()
         df_mask = df.loc[(df.lat >= s) & (df.lat <= n) & (df.lon >= w) & (df.lon <= e)]
         return df_mask
-
-    def re_griding(self, y,x, mask_df, res=0.01):
-        from scipy.interpolate.interpnd import _ndim_coords_from_arrays
-        from scipy.spatial import KDTree
-        from scipy.interpolate import NearestNDInterpolator
-
-
-        grid, data_points = np.meshgrid(x, y), mask_df.loc[:, ["lon", "lat"]].values
-        tree, xi = KDTree(data_points), _ndim_coords_from_arrays(tuple(grid), ndim=data_points.shape[1])
-        dists, indexes = tree.query(xi)
-        interp = NearestNDInterpolator(list(zip(data_points[:, 0], data_points[:, 1])), mask_df["lst"].values)
-        model = interp(*grid)
-        dists[dists > np.sqrt(2) * res] = 0
-        dists[dists != 0] = 1
-        model[dists.astype(int) == 0] = np.nan
-        return y, x, model
+    @staticmethod
+    def re_griding(y, x, mask_df, res=0.01):
+        if len(mask_df) == 0:
+            return np.zeros((y.shape[0], x.shape[0])) * np.nan
+        else:
+            from scipy.interpolate.interpnd import _ndim_coords_from_arrays
+            from scipy.spatial import KDTree
+            from scipy.interpolate import NearestNDInterpolator
+            grid, data_points = np.meshgrid(x, y), mask_df.loc[:, ["lon", "lat"]].values
+            tree, xi = KDTree(data_points), _ndim_coords_from_arrays(tuple(grid), ndim=data_points.shape[1])
+            dists, indexes = tree.query(xi)
+            interp = NearestNDInterpolator(list(zip(data_points[:, 0], data_points[:, 1])), mask_df["lst"].values)
+            model = interp(*grid)
+            dists[dists > np.sqrt(2) * res] = 0
+            dists[dists != 0] = 1
+            model[dists.astype(int) == 0] = np.nan
+            return model
 
     def save_to_tiff(self, res, save_loc="", shpfile_masking=True):
         import rasterio
         from rasterio.transform import Affine
-        y, x, grid_data = self.re_griding(self.boundary_mask(lst_data))
+        y, x, grid_data = self.re_griding(self.boundary_mask(self.sentinel_lst_data()))
         if shpfile_masking:
             mask = self.shp_file_masking(self.shpfile, y, x)
-            grid_data[mask==False] = np.nan
+            grid_data[mask == False] = np.nan
 
         crs = "epsg:4326"
         """save_loc is location where tiff file will save. Products is day (Day) or night (night)"""
@@ -172,6 +161,3 @@ class SentinelLST:
 
         except:
             return "tiff file can't save !!!"
-
-
-

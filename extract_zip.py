@@ -1,12 +1,10 @@
 from Sentinel3A_Download import SentinelLST
+import os
 
-direc = "D:\\LST_Satellites\\Sentinel_3A\\WAB\\"
-
-months = ["january", "february", "march", "april", "may", "june",
-          "july", "august", "september", "october", "november", "december"]
-
-
-folders = [direc + month + "_" + "2022" for month in months]
-print(folders)
-for fold in folders:
-    SentinelLST.extract_zip(fold)
+direc = "E:\LST_Satellites\Sentinel_3A\WAB\\2020_zips\\"
+unzip_folder = "E:\LST_Satellites\Sentinel_3A\WAB\\2020_extracted\\"
+days = sorted(os.listdir(direc))
+print(days)
+for day in days:
+    path = os.path.join(direc + day)
+    SentinelLST.extract_zip(path,unzip_folder)

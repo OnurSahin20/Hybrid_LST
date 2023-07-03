@@ -1,6 +1,5 @@
-from numpy import array
-from numpy import nan
-from netCDF4 import Dataset
+import numpy as np
+import netCDF4
 
 
 class TerraLST:
@@ -10,32 +9,27 @@ class TerraLST:
         self.qc_varibs = {"day": "QC_Day", "night": "QC_Night"}
         self.view_time = {"day": "Day_view_time", "night": "Night_view_time"}
         self.uncertanity = uncertainty
+        self.data_set = netCDF4.Dataset(self.full_nc_path)
 
     def get_wgs_coord(self):
-        nc_file = Dataset(self.full_nc_path)
-        lat, lon = array(nc_file["lat"]), array(nc_file["lon"])
+        lat, lon = np.array(self.data_set["lat"]), np.array(self.data_set["lon"])
         return lat, lon
+
+    def get_time(self):
+        return np.array(self.data_set["time"])
 
     def get_lst(self, product="day"):
         if product not in ["day", "night"]:
             raise ValueError('Only products "day" and "night" parameters for MODIS LST')
 
-        nc_file = Dataset(self.full_nc_path)
-        lst, qc = array(nc_file[self.lst_varibs[product]]), array(nc_file[self.qc_varibs[product]])
-        lst[lst == nc_file[self.lst_varibs[product]]._FillValue] = nan
+        lst, qc = np.array(self.data_set[self.lst_varibs[product]]), np.array(self.data_set[self.qc_varibs[product]])
+        lst[lst == self.data_set[self.lst_varibs[product]]._FillValue] = np.nan
         flags = []
         if self.uncertanity == 2:
             flags = [129, 145]
         elif self.uncertanity == 1:
             flags = [65, 73, 81, 129, 145]
         for flag in flags:
-            lst[qc == flag] = nan
+            lst[qc == flag] = np.nan
         return lst - 273.15
 
-
-if __name__ == '__main__':
-    terra_path = "Terra LST full path"
-    terra = TerraLST(terra_path)
-    lat, lon = terra.get_wgs_coord()
-    terra_lst = terra.get_lst()
-    print(terra_lst)
