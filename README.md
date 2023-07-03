@@ -69,6 +69,19 @@ sentinel_class.save_to_tiff(lon,lat,lst_raster,save_loc = "loc", product = "day"
 # save_loc where tif file will be saved!
 # Naming covention is "SLSTR_LST" + time + "day or night" + .tif file.
 ```
+Daily descending and ascending LST products can be saved easily to netcdf file. We created Sentinel_Extract_Daily.py 
+which is parent class of SentinelLST. SentinelDaily class from Sentinel_Extract_Daily is the implementation for the purpose.
+
+```
+from Sentinel_Extract_Daily.py import SentinelDaily
+daily_folder = "path of the folders that includes all that's day LST products",
+shp_path = "shape file path of the interest area"
+output_dir = "path of output direction"
+res = "resolution of the daily products"
+sentinel_class = SentinelDaily(daily_folder,shp_path,output_dir,res)
+sentinel_class.merge_write_instances() # write daily LST products inside parent folder (daily_folder)
+```
+
 ### Terra LST class.
 It is easy to get MODIS LST products using AρρEEARS - NASA tool. TerraLST class access lat, lon coordinates and LST data. Variables [""LST_Day_1km",""LST_Night_1km","QC_Day","QC_Night"] have to be inside Terra nc file.(It supoorts only netcdf file!). Quality variables of both day, night products provide LST errors which are [0 - Average LST error <= 1K, (65,73,81) - Average LST error <= 2K and (129,145) - Average LST error <= 3K). Use uncertainty input params to choose your quality flag. Other values will be masked. Straigthfoward usage of TerraClass 
 ```
@@ -77,43 +90,5 @@ terra_path = "Full path of Terra L3 product is taken from AρρEEARS"
 terra = TerraLST(terra_path)
 lat, lon = terra.get_wgs_coord() # arrays of latitudes and longitudes.
 terra_lst = terra.get_lst()     # 3d numpy array (time, lat, lon)
-```
-### Hybridized Terra and SLSTR
-Terra and SLSTR cross the equator from north to south, descending (10:30 and 10.00) and south to north, ascending (22:30,22.00). MODIS Terra and Sentinel SLSTR LSTs can be used for data fusion purposes. Hybrid_Data_Process.py parent class, which provides working with terra and sentinel classes.
-First create HybridLST instance. 4 inputs are required. full path to Sentinel folder's location, Terra netcf location and path to shapefile (.shp file). Tuple of start and end date of time interval. Matplotlib.path based mask is effective but it has computational burden thats why code creates mask using shapefile one time and save mask to txt file.
-```
-sentinel_path = "D:\\Path to Sentinel_Files"
-shape_file = "C:\\Users\\shape.shp"
-terra_path = "Terra.nc"
-hybrid = HybridLst(terra_path, sentinel_path, ("2022-08-01", "2022-09-01"), shape_file)
-```
-It is possible to get Terra and Sentinel LST day or night product for specific day 
-
-```
-sentinel_lst = hybrid.get_sentinel_instant_lst(cur_date="2022-08-04",date="day")
-terra_lst = hybrid.get_terra_instant_lst(cur_date="2022-08-04",date="day")
-```
-Visualize instances, LST differences and scatter plot using hybrid.plot_lst_instant
-
-```
-hybrid.plot_lst_instants(cur_date= "2022-08-04",date="night")
-```
-![solarized palettes](https://github.com/OnurSahin20/Hybrid_LST/blob/main/visualize_lsts.png?raw=true)
-
-Build time series for Sentinel and Terra LST 3d numpy array (time,lat,lon)
-
-```
-HybridLST initialized with begin and end times - ("2022-08-01", "2022-09-01"). 3d LST arrays np.shape -> (31,len(lat),len(lon))
-terra_day = hybrid.build_time_series(product="terra", date="day")
-terra_night = hybrid.build_time_series(product="terra", date="night")
-sentinel_day = hybrid.build_time_series(product="sentinel",date="day")
-sentinel_night = hybrid.build_time_series(product="sentinel",date="night")
-```
-Products ["terra_day, terra_night, sentinel_day, sentinel_night"] can be saved to netcdf file using method hybrid.save_lsts_netcdf
-
-```
-direc = "location"
-nc_name = "netcdf file name  without extension (.nc)"
-hybrid.save_lsts_netcdf(direc, nc_name)
 ```
 
