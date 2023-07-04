@@ -82,6 +82,9 @@ res = "resolution of the daily products"
 sentinel_class = SentinelDaily(daily_folder,shp_path,output_dir,res)
 sentinel_class.merge_write_instances() # write daily LST products inside parent folder (daily_folder)
 ```
+### Merge daily Sentinel LST data to yearly and save in netcdf files.
+Pass as argument to folder path of daily LST data sets and output path to create yearly lst maps in netcdf file.
+
 
 ### Terra LST class.
 It is easy to get MODIS LST products using AρρEEARS - NASA tool. TerraLST class access lat, lon coordinates and LST data. Variables [""LST_Day_1km",""LST_Night_1km","QC_Day","QC_Night"] have to be inside Terra nc file.(It supoorts only netcdf file!). Quality variables of both day, night products provide LST errors which are [0 - Average LST error <= 1K, (65,73,81) - Average LST error <= 2K and (129,145) - Average LST error <= 3K). Use uncertainty input params to choose your quality flag. Other values will be masked. Straigthfoward usage of TerraClass 
